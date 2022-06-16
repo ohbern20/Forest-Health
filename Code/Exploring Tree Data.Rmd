@@ -3,6 +3,174 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-Hi Gus! 
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+```
 
-Did you like swimming? 
+
+Pull in data
+```{r}
+Trees <- read.csv(here("Data", "Forest_Trees_17_21.csv"))
+Trees_regen <- read.csv(here("Data", "Forest_Trees_and_Regen_2021.csv"))
+Regen <- read.csv(here("Data", "Forest_Regeneration_17_21.csv"))
+```
+
+What Species are Present?
+```{r}
+Tree_Spp <- Trees %>%
+  group_by(Common.name, Forest) %>%
+  summarize(Obs = length(Common.name)) 
+
+
+#want to make sure species names are consistent...
+testing <- Tree_Spp %>% group_by(Common.name) %>%
+  summarize(presence = length(unique(Common.name)))
+ 
+#they are not
+```
+
+Make uniform species titles
+```{r}
+Tree_Spp$Common.name <- factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #there are 42 levels, so 42 "species" with many repeats
+
+
+#time to fix the repeats!
+wrong <- which(Tree_Spp$Common.name == "Black cherry"| Tree_Spp$Common.name == "Black cherry") 
+
+Tree_Spp$Common.name[wrong]<-"black cherry" #rename the wrong black cherries
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 41 levels 
+```
+
+```{r}
+#muscle wood is the next species I see in testing with duplicates. I will fix it
+
+bad <- which(Tree_Spp$Common.name == "muscle wood"| Tree_Spp$Common.name == "muscle wood") 
+Tree_Spp$Common.name[bad]<-"musclewood" 
+
+no <- which(Tree_Spp$Common.name == "Musclewood"| Tree_Spp$Common.name == "Musclewood") 
+Tree_Spp$Common.name[no]<-"musclewood" 
+
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 39 levels 
+```
+
+```{r}
+#time to fix quaking aspen
+
+horrible <- which(Tree_Spp$Common.name == "Quaking aspen"| Tree_Spp$Common.name == "Quaking aspen")
+Tree_Spp$Common.name[horrible]<-"quaking aspen" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 38 levels 
+```
+
+```{r}
+#fix the red maples
+
+terrible <- which(Tree_Spp$Common.name == "Red maple"| Tree_Spp$Common.name == "Red maple")
+Tree_Spp$Common.name[terrible]<-"red maple" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 37 levels 
+```
+
+```{r}
+#fix the red oaks
+not <- which(Tree_Spp$Common.name == "Red oak"| Tree_Spp$Common.name == "Red oak")
+Tree_Spp$Common.name[not]<-"red oak" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 36 levels 
+```
+
+```{r}
+#fix the red pine
+ugh <- which(Tree_Spp$Common.name == "Red pine"| Tree_Spp$Common.name == "Red pine")
+Tree_Spp$Common.name[ugh]<-"red pine" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 35 levels 
+```
+
+```{r}
+#fix the red spruce
+meh <- which(Tree_Spp$Common.name == "Red spruce"| Tree_Spp$Common.name == "Red spruce")
+Tree_Spp$Common.name[meh]<-"red spruce" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 34 levels 
+```
+
+```{r}
+#fix the hickory
+why <- which(Tree_Spp$Common.name == "Shagbark hickory"| Tree_Spp$Common.name == "Shagbark hickory")
+Tree_Spp$Common.name[why]<-"shagbark hickory" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 33 levels 
+```
+
+```{r}
+#fix the sugar maple
+ok <- which(Tree_Spp$Common.name == "Sugar maple"| Tree_Spp$Common.name == "Sugar maple")
+Tree_Spp$Common.name[ok]<-"sugar maple" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 32 levels
+```
+
+```{r}
+#fix the white ash
+right <- which(Tree_Spp$Common.name == "White ash"| Tree_Spp$Common.name == "White ash")
+Tree_Spp$Common.name[right]<-"white ash" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 31 levels
+```
+
+```{r}
+#fix the white oak
+huh <- which(Tree_Spp$Common.name == "White oak"| Tree_Spp$Common.name == "White oak")
+Tree_Spp$Common.name[huh]<-"white oak" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 30 levels
+```
+
+```{r}
+#fix the white pine
+fix <- which(Tree_Spp$Common.name == "White pine"| Tree_Spp$Common.name == "White pine")
+Tree_Spp$Common.name[fix]<-"white pine" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 29 levels
+```
+
+```{r}
+#fix the yellow birch
+last <- which(Tree_Spp$Common.name == "Yellow birch"| Tree_Spp$Common.name == "Yellow birch")
+Tree_Spp$Common.name[last]<-"yellow birch" 
+
+Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
+levels(Tree_Spp$Common.name) #now there are only 28 levels
+
+#I think those were all the duplicates
+```
+
+
+Now, with the cleaned data, find how many forests each species is present at
+```{r}
+ Tree_Rich <- Tree_Spp %>% group_by(Common.name) %>%
+  summarize(Presence = length(unique(Forest)))
+
+ #I can see that red maple is the only species present at all 5 forests
+```
+
+
+
+
