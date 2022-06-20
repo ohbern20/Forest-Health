@@ -17,6 +17,9 @@ Trees_regen <- read.csv(here("Data", "Forest_Trees_and_Regen_2021.csv"))
 Regen <- read.csv(here("Data", "Forest_Regeneration_17_21.csv"))
 ```
 
+
+##Part 1: Find out how many forests each species is present at
+
 What Species are Present?
 ```{r}
 Tree_Spp <- Trees %>%
@@ -173,4 +176,47 @@ Now, with the cleaned data, find how many forests each species is present at
 
 
 
+
+##Part 2: find the number of each species at each site 
+
+set up 
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(ggplot2)
+library(here)
+```
+
+
+pull in data
+```{r}
+DF <- read.csv(here("Data", "Forest_Trees_and_Regen_2021.csv"))
+```
+
+clean species
+```{r}
+unique(DF$sci_name)
+length(unique(DF$sci_name)) #says there are 31 species
+
+#can see I need to remove NA and blank values  
+DF <- DF[-which(is.na(DF$sci_name)), ]
+DF <- DF[-which(DF$sci_name == ""), ]
+
+#check to see if it worked. I don't see any NAs or blanks!
+unique(DF$sci_name)
+length(unique(DF$sci_name)) #i now have 29, so I know two were deleted
+```
+
+
+now make a dataframe that displays how many of each species is found in each forest
+```{r}
+Num_obs <- DF %>% group_by(sci_name, Forest) %>%
+  summarize(num_trees = length(sci_name))
+```
+
+make a dataframe that shows how many of each species is found in each plot
+```{r}
+Num_obs_site <- DF %>% group_by(sci_name, Forest, Plot) %>%
+  summarize(num_trees = length(sci_name))
+```
 
