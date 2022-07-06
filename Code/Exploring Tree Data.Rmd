@@ -41,11 +41,11 @@ levels(Tree_Spp$Common.name) #there are 42 levels, so 42 "species" with many rep
 
 
 #time to fix the repeats!
-wrong <- which(Tree_Spp$Common.name == "Black cherry"| Tree_Spp$Common.name == "Black cherry") 
+wrong <- which(Trees$Common.name == "Black cherry"| Trees$Common.name == "Black cherry") 
 
-Tree_Spp$Common.name[wrong]<-"black cherry" #rename the wrong black cherries
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 41 levels 
+Trees$Common.name[wrong]<-"black cherry" #rename the wrong black cherries
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 41 levels 
 ```
 
 ```{r}
@@ -168,8 +168,8 @@ levels(Tree_Spp$Common.name) #now there are only 28 levels
 
 Now, with the cleaned data, find how many forests each species is present at
 ```{r}
- Tree_Rich <- Tree_Spp %>% group_by(Common.name) %>%
-  summarize(Presence = length(unique(Forest)))
+ Tree_Rich <- Trees %>% group_by(Common.name, Forest, PlotNum) %>%
+  summarize(Presence = length((Forest)))
 
  #I can see that red maple is the only species present at all 5 forests
 ```
