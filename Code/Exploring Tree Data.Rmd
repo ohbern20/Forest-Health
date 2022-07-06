@@ -20,24 +20,10 @@ Regen <- read.csv(here("Data", "Forest_Regeneration_17_21.csv"))
 
 ##Part 1: Find out how many forests each species is present at
 
-What Species are Present?
-```{r}
-Tree_Spp <- Trees %>%
-  group_by(Common.name, Forest) %>%
-  summarize(Obs = length(Common.name)) 
-
-
-#want to make sure species names are consistent...
-testing <- Tree_Spp %>% group_by(Common.name) %>%
-  summarize(presence = length(unique(Common.name)))
- 
-#they are not
-```
-
 Make uniform species titles
 ```{r}
-Tree_Spp$Common.name <- factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #there are 42 levels, so 42 "species" with many repeats
+Trees$Common.name <- factor(Trees$Common.name)
+levels(Trees$Common.name) #there are 42 levels, so 42 "species" with many repeats
 
 
 #time to fix the repeats!
@@ -51,127 +37,140 @@ levels(Trees$Common.name) #now there are only 41 levels
 ```{r}
 #muscle wood is the next species I see in testing with duplicates. I will fix it
 
-bad <- which(Tree_Spp$Common.name == "muscle wood"| Tree_Spp$Common.name == "muscle wood") 
-Tree_Spp$Common.name[bad]<-"musclewood" 
+bad <- which(Trees$Common.name == "muscle wood"| Trees$Common.name == "muscle wood") 
+Trees$Common.name[bad]<-"musclewood" 
 
-no <- which(Tree_Spp$Common.name == "Musclewood"| Tree_Spp$Common.name == "Musclewood") 
-Tree_Spp$Common.name[no]<-"musclewood" 
+no <- which(Trees$Common.name == "Musclewood"| Trees$Common.name == "Musclewood") 
+Trees$Common.name[no]<-"musclewood" 
 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 39 levels 
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 39 levels 
 ```
 
 ```{r}
 #time to fix quaking aspen
 
-horrible <- which(Tree_Spp$Common.name == "Quaking aspen"| Tree_Spp$Common.name == "Quaking aspen")
-Tree_Spp$Common.name[horrible]<-"quaking aspen" 
+horrible <- which(Trees$Common.name == "Quaking aspen"| Trees$Common.name == "Quaking aspen")
+Trees$Common.name[horrible]<-"quaking aspen" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 38 levels 
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 38 levels 
 ```
 
 ```{r}
 #fix the red maples
 
-terrible <- which(Tree_Spp$Common.name == "Red maple"| Tree_Spp$Common.name == "Red maple")
-Tree_Spp$Common.name[terrible]<-"red maple" 
+terrible <- which(Trees$Common.name == "Red maple"| Trees$Common.name == "Red maple")
+Trees$Common.name[terrible]<-"red maple" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 37 levels 
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 37 levels 
 ```
 
 ```{r}
 #fix the red oaks
-not <- which(Tree_Spp$Common.name == "Red oak"| Tree_Spp$Common.name == "Red oak")
-Tree_Spp$Common.name[not]<-"red oak" 
+not <- which(Trees$Common.name == "Red oak"| Trees$Common.name == "Red oak")
+Trees$Common.name[not]<-"red oak" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 36 levels 
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 36 levels 
 ```
 
 ```{r}
 #fix the red pine
-ugh <- which(Tree_Spp$Common.name == "Red pine"| Tree_Spp$Common.name == "Red pine")
-Tree_Spp$Common.name[ugh]<-"red pine" 
+ugh <- which(Trees$Common.name == "Red pine"| Trees$Common.name == "Red pine")
+Trees$Common.name[ugh]<-"red pine" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 35 levels 
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 35 levels 
 ```
 
 ```{r}
 #fix the red spruce
-meh <- which(Tree_Spp$Common.name == "Red spruce"| Tree_Spp$Common.name == "Red spruce")
-Tree_Spp$Common.name[meh]<-"red spruce" 
+meh <- which(Trees$Common.name == "Red spruce"| Trees$Common.name == "Red spruce")
+Trees$Common.name[meh]<-"red spruce" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 34 levels 
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 34 levels 
 ```
 
 ```{r}
 #fix the hickory
-why <- which(Tree_Spp$Common.name == "Shagbark hickory"| Tree_Spp$Common.name == "Shagbark hickory")
-Tree_Spp$Common.name[why]<-"shagbark hickory" 
+why <- which(Trees$Common.name == "Shagbark hickory"| Trees$Common.name == "Shagbark hickory")
+Trees$Common.name[why]<-"shagbark hickory" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 33 levels 
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 33 levels 
 ```
 
 ```{r}
 #fix the sugar maple
-ok <- which(Tree_Spp$Common.name == "Sugar maple"| Tree_Spp$Common.name == "Sugar maple")
-Tree_Spp$Common.name[ok]<-"sugar maple" 
+ok <- which(Trees$Common.name == "Sugar maple"| Trees$Common.name == "Sugar maple")
+Trees$Common.name[ok]<-"sugar maple" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 32 levels
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 32 levels
 ```
 
 ```{r}
 #fix the white ash
-right <- which(Tree_Spp$Common.name == "White ash"| Tree_Spp$Common.name == "White ash")
-Tree_Spp$Common.name[right]<-"white ash" 
+right <- which(Trees$Common.name == "White ash"| Trees$Common.name == "White ash")
+Trees$Common.name[right]<-"white ash" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 31 levels
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 31 levels
 ```
 
 ```{r}
 #fix the white oak
-huh <- which(Tree_Spp$Common.name == "White oak"| Tree_Spp$Common.name == "White oak")
-Tree_Spp$Common.name[huh]<-"white oak" 
+huh <- which(Trees$Common.name == "White oak"| Trees$Common.name == "White oak")
+Trees$Common.name[huh]<-"white oak" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 30 levels
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 30 levels
 ```
 
 ```{r}
 #fix the white pine
-fix <- which(Tree_Spp$Common.name == "White pine"| Tree_Spp$Common.name == "White pine")
-Tree_Spp$Common.name[fix]<-"white pine" 
+fix <- which(Trees$Common.name == "White pine"| Trees$Common.name == "White pine")
+Trees$Common.name[fix]<-"white pine" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 29 levels
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 29 levels
 ```
 
 ```{r}
 #fix the yellow birch
-last <- which(Tree_Spp$Common.name == "Yellow birch"| Tree_Spp$Common.name == "Yellow birch")
-Tree_Spp$Common.name[last]<-"yellow birch" 
+last <- which(Trees$Common.name == "Yellow birch"| Trees$Common.name == "Yellow birch")
+Trees$Common.name[last]<-"yellow birch" 
 
-Tree_Spp$Common.name<-factor(Tree_Spp$Common.name)
-levels(Tree_Spp$Common.name) #now there are only 28 levels
+Trees$Common.name<-factor(Trees$Common.name)
+levels(Trees$Common.name) #now there are only 28 levels
 
 #I think those were all the duplicates
 ```
 
 
-Now, with the cleaned data, find how many forests each species is present at
+Now, with the cleaned data, find how many forests each species is present at and the number of species at each plot
 ```{r}
  Tree_Rich <- Trees %>% group_by(Common.name, Forest, PlotNum) %>%
   summarize(Presence = length((Forest)))
 
  #I can see that red maple is the only species present at all 5 forests
+```
+
+
+```{r}
+Tree_Spp <- Trees %>%
+  group_by(Common.name, Forest) %>%
+  summarize(Obs = length(Common.name)) 
+```
+
+```{r}
+Tree_pres <- Trees %>%
+  group_by(Common.name) %>%
+  summarize(Num = length(unique(Forest)))
 ```
 
 
