@@ -57,5 +57,110 @@ ggplot(Dense, aes(Method, mean_dens)) +
   theme_bw()
 ```
 
-4. 
+4. Calculate confidence intervals
+
+```{r}
+#CI for densiometer method
+
+sample <- DF %>% group_by(PointNumber) %>%
+  summarize(Total = length(unique(PointNumber))) #can see that there are 9 points, so that means the sample size is 9
+
+#sample size n = 9 
+#sample mean x = 91.10222
+#sample sd s = 5.800843 
+#found mean and sd values from looking at Dense dataframe 
+
+
+n <- 9
+xbar <- 91.10222
+s <- 5.800843
+
+margin <- qt(0.975,df=n-1)*s/sqrt(n)
+
+lowerinterval <- xbar - margin
+lowerinterval 
+
+#the lower interval is 86.643
+
+upperinterval <- xbar + margin
+upperinterval 
+
+#the upper interval is 95.56114
+
+#The confidence interval of 95% for the densiometer method is [86.643, 95.56114]
+```
+
+
+```{r}
+#CI for CanopyApp method
+
+sample <- DF %>% group_by(PointNumber) %>%
+  summarize(Total = length(unique(PointNumber))) #can see that there are 9 points, so that means the sample size is 9
+
+#sample size n = 9 
+#sample mean x = 87.59344
+#sample sd s = 6.366887
+#found mean and sd values from looking at Dense dataframe 
+
+
+t <- 9
+ybar <- 87.59344
+e <- 6.366887
+
+marginal <- qt(0.975,df=t-1)*e/sqrt(t)
+
+lowinterval <- ybar - marginal
+lowinterval 
+
+#the lower interval is 82.69942
+
+upinterval <- ybar + marginal
+upinterval 
+
+#the upper interval is 92.48746
+
+#The confidence interval of 95% for the densiometer method is [82.69942, 92.48746]
+```
+
+5. Plot the confidence intervals
+```{r}
+#make a dataframe with point number, densiometer, and canopyapp
+forplotting <- DF %>% group_by(PointNumber, Densiometer, CanopyApp) %>%
+  summarize(Point = length(unique(PointNumber)))
+```
+
+
+
+```{r}
+ggplot(forplotting, aes(Densiometer, CanopyApp)) +
+  geom_point() +
+  geom_smooth(method = lm, level = 0.95) +
+  xlab("Densiometer") +
+  ylab("CanopyApp") +
+  theme_bw()
+```
+
+```{r}
+#now I'm going to try to make a bar chart version plotting the CI for densiometer
+ggplot(Dense, aes(Method, mean_dens)) +
+  geom_col() +
+  geom_errorbar(aes
+    (ymin = lowerinterval, ymax = upperinterval)) +
+  xlab("Method") +
+  ylab("Value") +
+  theme_bw()
+```
+
+```{r}
+#and now plotting the CI for canopyapp
+ggplot(Dense, aes(Method, mean_dens)) +
+  geom_col() +
+  geom_errorbar(aes
+    (ymin = lowinterval, ymax = upinterval)) +
+  xlab("Method") +
+  ylab("Value") +
+  theme_bw()
+```
+
+I can see that the means fall within the 95% CI for both methods 
 
