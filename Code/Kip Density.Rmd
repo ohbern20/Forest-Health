@@ -1,0 +1,61 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#clear enviro, run libraries
+rm(list = ls())
+library(tidyverse)
+library(here)
+library(ggplot2)
+```
+
+
+```{r}
+#pull in data
+DF <- read.csv(here("Data", "Kip Practice Trees.csv"))
+```
+
+
+1. Pivot the dataframe
+```{r}
+Kip_dens <- DF %>% pivot_longer(cols = c('Densiometer', 'CanopyApp'), names_to = "Method")
+```
+
+
+
+2. Build a box plot
+
+```{r}
+ggplot(Kip_dens, aes(Method, value)) +
+  geom_boxplot() +
+  geom_point(aes(color = "grey")) +
+  xlab("Method") +
+  ylab("Value") +
+  theme_bw()
+```
+
+
+3. Build a bar graph
+```{r}
+#make a dataframe
+Dense <- Kip_dens %>% group_by(Method) %>%
+  summarize(mean_dens = mean(value, na.rm = T),
+            sd_dens = sd(value, na.rm = T))
+```
+
+```{r}
+#plot the dataframe
+ggplot(Dense, aes(Method, mean_dens)) +
+  geom_col() +
+  geom_errorbar(aes
+    (ymin = mean_dens - sd_dens, ymax = mean_dens + sd_dens)
+  )
+  xlab("Method") +
+  ylab("Value") +
+  theme_bw()
+```
+
+4. 
+
