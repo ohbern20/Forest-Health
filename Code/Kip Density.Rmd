@@ -51,7 +51,7 @@ ggplot(Dense, aes(Method, mean_dens)) +
   geom_col() +
   geom_errorbar(aes
     (ymin = mean_dens - sd_dens, ymax = mean_dens + sd_dens)
-  )
+  ) +
   xlab("Method") +
   ylab("Value") +
   theme_bw()
@@ -162,5 +162,31 @@ ggplot(Dense, aes(Method, mean_dens)) +
   theme_bw()
 ```
 
-I can see that the means fall within the 95% CI for both methods 
+
+6. Now lets use stats to compare the methods 
+
+First I'll run an ANOVA
+```{r}
+myanova <- aov(value ~ Method, data = Kip_dens)
+summary(myanova)
+anova(myanova)
+```
+
+
+Now let's run a linear regression (anova)
+```{r}
+mylm <- lm(value ~ Method, Kip_dens)
+summary(mylm)
+anova(mylm)
+```
+
+Now a general linear model (anova)
+```{r}
+myglm <- glm(value ~ Method, family = gaussian, data = Kip_dens)
+summary(myglm)
+anova(myglm)
+```
+
+
+
 
