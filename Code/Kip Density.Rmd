@@ -123,6 +123,33 @@ upinterval
 ```
 
 5. Plot the confidence intervals
+
+First, add the CI values to the Dense dataframe
+```{r}
+CImin <- c(82.69942, 86.6433)
+new_dense <- cbind(Dense, CImin)
+
+CImax <- c(92.48746, 95.56114)
+new_dense <- cbind(new_dense, CImax)
+```
+
+
+Now plot the CI values 
+```{r}
+ggplot(new_dense, aes(Method, mean_dens)) +
+  geom_col() +
+  geom_errorbar(aes
+    (ymin = CImin, ymax = CImax)
+  ) +
+  xlab("Method") +
+  ylab("Value") +
+  theme_bw()
+```
+
+
+
+
+Some attempts
 ```{r}
 #make a dataframe with point number, densiometer, and canopyapp
 forplotting <- DF %>% group_by(PointNumber, Densiometer, CanopyApp) %>%
