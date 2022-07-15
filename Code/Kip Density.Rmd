@@ -139,7 +139,10 @@ Now plot the CI values
 ggplot(new_dense, aes(Method, mean_dens)) +
   geom_col() +
   geom_errorbar(aes
-    (ymin = CImin, ymax = CImax)
+    (ymin = CImin, ymax = CImax), 
+    width = 0.2,
+    size = 0.5,
+    color = "blue", 
   ) +
   xlab("Method") +
   ylab("Value") +
@@ -149,7 +152,7 @@ ggplot(new_dense, aes(Method, mean_dens)) +
 
 
 
-Some attempts
+Some previous attempts
 ```{r}
 #make a dataframe with point number, densiometer, and canopyapp
 forplotting <- DF %>% group_by(PointNumber, Densiometer, CanopyApp) %>%
