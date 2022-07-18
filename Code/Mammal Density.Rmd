@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+library(ggplot2)
+```
+
+
+```{r}
+DF <- read.csv(here("Data", "KA_workflow1.1.csv"))
+```
+
+1. Delete all observations of "nothing here" and "something here"
+```{r}
+new_DF <- subset(DF, choice!= "NOTHINGHERE")
+new_DF <- subset(new_DF, choice!= "SOMETHINGHERE")
+```
+
+2. Arrange dataframe by subject id
+```{r}
+new_DF <- new_DF %>% arrange(subject_ids)
+```
+
+3. Group by forest
+```{r}
+by_forest <- new_DF %>% filter(choice == "DEERWHITETAILED") %>% 
+  group_by(Forest, choice) %>%
+  summarize(deer = length(choice))
+```
+
+4. Try to accommodate for multiple classifications
+```{r}
+by_site <- new_DF %>% filter(choice == "DEERWHITETAILED") %>% 
+  group_by(Forest, subject_ids) %>%
+  summarize(deer = length(choice))
+
+site <- by_site %>% group_by(Forest) %>%
+  summarize(deer = length(subject_ids))
+```
+
+5. Graph the results
+```{r}
+ggplot(site, aes(Forest, deer)) +
+  geom_col() +
+  xlab("Forest") +
+  ylab("Deer Density") +
+  theme_bw()
+```
+
+
